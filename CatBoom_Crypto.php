@@ -131,6 +131,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
           }else{
                $crypt = $loader->crypto($str);
                return $crypt;
@@ -141,6 +142,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
           }else{
                $hash = $this->hash_list;
                $crypt = '$1a$e4'.md5(hash('sha512',$loader->crypto($str).$hash[5].$hash[1].$hash[2]).$hash[5]).$hash['strong'];
