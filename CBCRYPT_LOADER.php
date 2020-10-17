@@ -3,32 +3,101 @@
 * @name : CatBoom Crypto Loader Module
 *
 * @author : Catover203
-* @version : 1.3
+* @version : 2.0
 * @access public
 * @editable : yes                     
-* @author-link : 
-* + Github: https://www.github.com/Catover203
-* + Youtube: https://www.youtube.com/channel/UCJGbwB4wGzB39xF71iGwAjg
-* + Discord
+* @author_link :
+* * Github: https://www.github.com/Catover203
+* * Youtube: https://www.youtube.com/channel/UCJGbwB4wGzB39xF71iGwAjg
+* * Discord
 *
 *
 * This a loader module of CBCrypto. Don't edit, it can have a lot error if you edit.
 * Anyway, you can edit that if you understand php and known how to fix this error.
 **/
 class CBCLOADER{
+     function CBCR($plaintext, $key) {
+	  $key = $this->text2ascii($key);
+	  $plaintext = $this->text2ascii($plaintext);
+	  $keysize = count($key);
+	  $input_size = count($plaintext);
+          $cipher = "";
+	       for ($i = 0; $i < $input_size; $i++)
+	            $cipher .= chr(($plaintext[$i] ^ $key[$i % $keysize])+512);
+	  return $cipher;
+     }
+     function CBCRP($cipher, $key) {
+	   $key = $this->text2ascii($key);
+	   $cipher = $this->text2ascii($cipher);
+	   $keysize = count($key);
+	   $input_size = count($cipher);
+	   $plaintext = "";
+	   for ($i = 0; $i < $input_size; $i++)
+	        $plaintext .= chr(($cipher[$i] ^ $key[$i % $keysize])+512);
+	   return $plaintext;
+	}
+     function XORcrypt($plaintext, $key) {
+	  $key = $this->text2ascii($key);
+	  $plaintext = $this->text2ascii($plaintext);
+	  $keysize = count($key);
+	  $input_size = count($plaintext);
+          $cipher = "";
+	       for ($i = 0; $i < $input_size; $i++)
+	            $cipher .= chr($plaintext[$i] ^ $key[$i % $keysize]);
+	  return $cipher;
+     }
+
+     function crack($cipher, $keysize) {
+	  $cipher = $this->text2ascii($cipher);
+	  $occurences = $key = array();
+	  $input_size = count($cipher);
+	  for ($i = 0; $i < $input_size; $i++) {
+		  $j = $i % $keysize;
+		       if (++$occurences[$j][$cipher[$i]] > $occurences[$j][$key[$j]])
+	               $key[$j] = $cipher[$i];
+	     }
+          return $this->ascii2text(array_map(function($v) { return $v ^ 32; }, $key));
+     }
+
+	public function plaintext($cipher, $key) {
+		$key = $this->text2ascii($key);
+		$cipher = $this->text2ascii($cipher);
+		$keysize = count($key);
+		$input_size = count($cipher);
+		$plaintext = "";
+		
+		for ($i = 0; $i < $input_size; $i++)
+			$plaintext .= chr($cipher[$i] ^ $key[$i % $keysize]);
+
+		return $plaintext;
+	}
+
+	private function text2ascii($text) {
+		return array_map('ord', str_split($text));
+	}
+
+	private function ascii2text($ascii) {
+		$text = "";
+
+		foreach($ascii as $char)
+			$text .= chr($char);
+
+		return $text;
+	}
      function getOS(){
      $os = PHP_OS;
      return $os;
      }
      function gen_hash(){
           $str = hash('sha512', '$A1$b4'.base64_encode(rand()));
-          $hash = hash('sha256', '#@^^#!&(&^@!@'.$str.'&#65509;&#65533;]$#&#65505;&#65533;;_@&((>.,&#65509;&#65533;&#65533;&');
+          $hash = hash('sha256', 'gfettyuu4ds345g'.$str.'ea255fs22ww24rfsqy6rq12f6d');
           $bc = base64_encode($hash);
           $bc2 = hash('sha512', 'a5dc421ab7630b'.$bc.rand().'$a2$14');
           $bc3 = substr($bc2,0,16);
           $bc4 = '$a2$d41'.$bc3.'#$a34fra277gs';
           return $bc4;
      }
+     
      function hash_list(){
           $list = 
           [
