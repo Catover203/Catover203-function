@@ -3,7 +3,7 @@
 * @name : CatBoom Crypto
 *
 * @author : Catover203
-* @version : 1.5
+* @version : 1.8
 * @access public
 * @editable : yes
 * @author_link :
@@ -18,7 +18,7 @@
 class CBCrypto{
      function __construct(){
           $file = 'CBCRYPT_LOADER.php';
-          if(file_exists($file)){
+          if(file_exists($file) && class_exists('CBCLOADER')){
                include($file);
                $loader = new CBCLOADER();
                $this->loader = $loader;
@@ -29,14 +29,34 @@ class CBCrypto{
                
           }else{
                $this->loader = false;
-               echo "<p><b>CatBoom Crypto Load Failed: </b>Can't find loader file.</p>";
+               echo "<p><b>CatBoom Crypto Load Failed: </b>Can't load <b>Loader Module</b>.</p>";
+          }
+     }
+     function save_crypt_file($string, $file){
+          $loader = $this->loader;
+          if(!$loader && isset($file)){
+               return false;
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not success.</p>';
+          }else{
+               $crypto = $loader->text2binary($string);
+               $this->cloud_save('./',$file,$crypto);
+          }
+     }
+     function read_crypt_file($file){
+          $loader = $this->loader;
+          if(!$loader && isset($file)){
+               return false;
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not success.</p>';
+          }else{
+               $read = $this->cloud_read($file);
+               return $read;
           }
      }
      function encrypt($string, $key){
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $crypto = $loader->CBCR($string, $key);
                return $crypto;
@@ -46,7 +66,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $crypto = $loader->CBCRP($string, $key);
                return $crypto;
@@ -56,7 +76,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $hash = $this->hash_list;
                $digi = $this->digi_hash_list;
@@ -68,7 +88,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $hash = $this->hash_list;
                $SSE_pass = $this->SSEcrypt($hash['strong']);
@@ -81,7 +101,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $crypto = $loader->XORcrypt($str, $key);
                return $crypto;
@@ -91,7 +111,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $crypto = $loader->crypto($str);
                return $crypto;
@@ -101,7 +121,7 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
+               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader not found.</p>';
           }else{
                $OS = $this->OS;
                return $OS;
@@ -123,7 +143,7 @@ class CBCrypto{
                return $loader;
           }else{
                return false;
-               echo '<p><b>CatBoomCrypto Load Failed: </b>Failed load Loader file.<br>Loader File not found</p>';
+               echo '<p><b>CatBoomCrypto Load Failed: </b>Failed load Loader file.<br>Loader not found</p>';
           }
      }
 /*
@@ -131,7 +151,6 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
           }else{
                $crypt = $loader->crypto($str);
                return $crypt;
@@ -142,7 +161,6 @@ class CBCrypto{
           $loader = $this->loader;
           if(!$loader){
                return false;
-               echo '<p><b>CatBoom Crypto Load Failed: </b>Loader file not found.</p>';
           }else{
                $hash = $this->hash_list;
                $crypt = '$1a$e4'.md5(hash('sha512',$loader->crypto($str).$hash[5].$hash[1].$hash[2]).$hash[5]).$hash['strong'];

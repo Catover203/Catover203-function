@@ -3,7 +3,7 @@
 * @name : CatBoom Crypto Loader Module
 *
 * @author : Catover203
-* @version : 2.0
+* @version : 2.2
 * @access public
 * @editable : yes                     
 * @author_link :
@@ -16,6 +16,47 @@
 * Anyway, you can edit that if you understand php and known how to fix this error.
 **/
 class CBCLOADER{
+	function Bin($text){
+		$bin = array();
+		for($i=0; strlen($text)>$i; $i++){
+			$bin[] = decbin(ord($text[$i]));
+        }
+	return implode(' ',$bin);
+	}
+	function NBin($plaintext) {
+		$plaintext = text2ascii($plaintext);
+	$input_size = count($plaintext);
+	$cipher = "";
+	for ($i = 0; $i < $input_size; $i++){
+		$cipher .= chr($plaintext[$i] + 6 * 12 );
+    }
+	return $cipher;
+	}
+	function master($text){
+		$bin = explode(' ',Bin($text));
+		foreach($bin as $str){
+			$a .= ' '.str_replace('1', '5', str_replace('0', '7', $str));
+		}
+		$a1 = array('5', '7');
+		$b1 = array('0', '1');
+		$result = str_replace($a1, $b1, $a);
+		return $result;
+	}
+    function text2binary($text){
+	$bin = array();
+    for($i=0; strlen($text)>$i; $i++)
+    	$bin[] = decbin(ord($text[$i]));
+
+    return implode(' ',$bin);
+     }
+     function binary2text($str){
+	$text = array();
+	$bin = explode(" ", $bin);
+	for($i=0; count($bin)>$i; $i++)
+		$text[] = chr(bindec($bin[$i]));
+		
+	return implode($text);
+     }
      function CBCR($plaintext, $key) {
 	  $key = $this->text2ascii($key);
 	  $plaintext = $this->text2ascii($plaintext);
@@ -164,4 +205,4 @@ class CBCLOADER{
           return $decode;
      }
 }
-?>
+?>		
