@@ -1,24 +1,40 @@
 <?php
 class CatBoomMailer{
 function __construct($host, $port, $auth, $username, $password){
-require_once 'PEAR.php';
- $smtp = Mail::factory('smtp',
-   array ('host' => $host,
+   use PHPMailer\PHPMailer\PHPMailer;
+   use PHPMailer\PHPMailer\Exception;
+   require 'PHPMailer/src/Exception.php';
+   require 'PHPMailer/src/PHPMailer.php';
+   require 'PHPMailer/src/SMTP.php';
+   $smtp = [
+     'host' => $host,
      'port' => $port,
      'auth' => $auth,
      'username' => $username,
-     'password' => $password));
-     $rhis->smtp= $smtp;
+     'password' => $password
+      ];
+     $this->smtp = $smtp;
 }
-function send($to, $subject, $body, $header){
-if(!isset($header)){
-$header = [
-'To' => $to,
-'Subject' => $subject
-];
-}
-return $this->smtp->send($to, $header, $body);
-}
+function send($to, $subject, $body, $header = ['isHTML' => false, 'SMTPSecure' => 'ssl', 'From' => 'CatBoomMailer']){
+  $smtp = $this->smtp;
+  $mail = new PHPMailer();
+  $mail->IsSMTP();
+  $mail->SMTPDebug  = 0;  
+  $mail->SMTPAuth   = $smtp['auth'];
+  $mail->SMTPSecure = "ssl";
+  $mail->Port       = $smtp['port'];
+  $mail->Host       = $smtp['host'];
+  $mail->Username   = $smtp['username'];
+  $mail->Password   = $smtp['password'];
+  $mail->AddAddress($to, $header['to']);
+  $mail->SetFrom($smtp['username'], $header['From']);
+  $mail->Subject = $subject;
+  $content = $body;
+  if($header['isHTML'] == true){
+  $mail->IsHTML($header['isHTML']);
+  $mail->MsgHTML($content);
+  }
+ return $mail->send();
 }
 class CatBoomFile{
 public $file;
