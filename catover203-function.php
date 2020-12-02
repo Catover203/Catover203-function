@@ -1,11 +1,11 @@
 <?php
 class CatBoomMailer{
 function __construct($host, $port, $auth, $username, $password){
-   use PHPMailer\PHPMailer\PHPMailer;
-   use PHPMailer\PHPMailer\Exception;
-   require 'PHPMailer/src/Exception.php';
-   require 'PHPMailer/src/PHPMailer.php';
-   require 'PHPMailer/src/SMTP.php';
+   use CatBoomMailer\CatBoomMailer\PHPMailer;
+   use CatBoomMailer\CatBoomMailer\Exception;
+   require 'CatBoomMailer/src/Exception.php';
+   require 'CatBoomMailer/src/PHPMailer.php';
+   require 'CatBoomMailer/src/SMTP.php';
    $smtp = [
      'host' => $host,
      'port' => $port,
