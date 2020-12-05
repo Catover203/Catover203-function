@@ -78,7 +78,9 @@ function catover203_function_version(){
 	$version = "1.6.2";
 	return $version;
 }
-
+function text2link($s) {
+          return preg_replace('@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a href="$1">$1</a>', $s);
+}
 function catdb_connect($host, $username, $password, $database){
 	if(isset($database)){
 		$connect = new mysqli($host, $username, $password, $database);
