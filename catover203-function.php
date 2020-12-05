@@ -20,7 +20,7 @@ class CBMailer{
 }
 	function send($to, $subject, $body, $header = ['isHTML' => false, 'From' => 'CatBoomMailer', 'to' => 'CatBoomMailerToUser']){
 		$smtp = $this->smtp;
-		$mail = new PHPMailer();
+		$mail = new CatBoomMailer();
 		$mail->IsSMTP();
 		$mail->SMTPDebug  = 0;  
 		$mail->SMTPAuth   = $smtp['auth'];
