@@ -35,8 +35,8 @@ class CBMailer{
 		$content = $body;
 		if($header['isHTML'] == true){
 			$mail->IsHTML($header['isHTML']);
-			$mail->MsgHTML($content);
 		}
+		$mail->MsgHTML($content);
 		return $mail->send();
 	}
 }
